@@ -1,0 +1,16 @@
+﻿Algorithms are based on the following articles:
+
+https://en.wikipedia.org/wiki/LR_parser
+
+http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/
+
+-> http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/110%20LR%20and%20SLR%20Parsing.pdf
+-> http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/140%20LALR%20Parsing.pdf
+-> http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/04/Slides04B.pdf
+-> http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/05/Slides05.pdf
+-> http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/06/Slides06.pdf
+
+http://www.cs.virginia.edu/~cs415/reading/FirstFollowLL.pdf
+
+http://stackoverflow.com/questions/14103199/lr1-item-dfa-computing-lookaheads
+

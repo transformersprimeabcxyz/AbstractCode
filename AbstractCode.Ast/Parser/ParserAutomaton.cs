@@ -1,0 +1,51 @@
+// This file is part of AbstractCode.
+// 
+// AbstractCode is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// AbstractCode is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with AbstractCode.  If not, see <http://www.gnu.org/licenses/>.
+// 
+using System.Collections.Generic;
+using System.Linq;
+
+namespace AbstractCode.Ast.Parser
+{
+    public class ParserAutomaton
+    {
+        public ParserAutomaton(Grammar grammar)
+        {
+            Grammar = grammar;
+            States = new List<ParserState>();
+            InitialStates = new Dictionary<GrammarDefinition, ParserState>();
+        }
+
+        public Grammar Grammar
+        {
+            get;
+        }
+
+        public ParserState DefaultInitialState
+        {
+            get;
+            set;
+        }
+
+        public IDictionary<GrammarDefinition, ParserState> InitialStates
+        {
+            get;
+        }
+
+        public List<ParserState> States
+        {
+            get;
+        }
+    }
+}

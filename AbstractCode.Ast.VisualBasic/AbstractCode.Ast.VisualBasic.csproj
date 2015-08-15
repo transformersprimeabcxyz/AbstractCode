@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8BE7D951-EDB9-440B-A880-BE9FB25EA86E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AbstractCode.Ast.VisualBasic</RootNamespace>
+    <AssemblyName>AbstractCode.Ast.VisualBasic</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IVisualBasicVisitable.cs" />
+    <Compile Include="Members\AccessorDeclaration.cs" />
+    <Compile Include="Members\ConstructorDeclaration.cs" />
+    <Compile Include="Members\DelegateDeclaration.cs" />
+    <Compile Include="Members\EventDeclaration.cs" />
+    <Compile Include="Members\HandlesClause.cs" />
+    <Compile Include="Members\ImplementsClause.cs" />
+    <Compile Include="Members\IVBMethodDeclaration.cs" />
+    <Compile Include="Members\MethodDeclaration.cs" />
+    <Compile Include="Members\ParameterDeclaration.cs" />
+    <Compile Include="Members\PropertyDeclaration.cs" />
+    <Compile Include="Statements\AddRemoveHandlerStatement.cs" />
+    <Compile Include="Statements\CatchClause.cs" />
+    <Compile Include="Statements\DoLoopStatement.cs" />
+    <Compile Include="Statements\ExitStatement.cs" />
+    <Compile Include="IVisualBasicAstVisitor.cs" />
+    <Compile Include="Members\ModifierElement.cs" />
+    <Compile Include="Members\TypeDeclaration.cs" />
+    <Compile Include="Members\TypeParameterDeclaration.cs" />
+    <Compile Include="Members\VariableDeclarator.cs" />
+    <Compile Include="Statements\ContinueStatement.cs" />
+    <Compile Include="Statements\EndScopeBlockClause.cs" />
+    <Compile Include="Statements\EndStatement.cs" />
+    <Compile Include="Statements\IfElseStatement.cs" />
+    <Compile Include="Types\PrimitiveTypeReference.cs" />
+    <Compile Include="VisualBasicAstTokenCode.cs" />
+    <Compile Include="VisualBasicAstWriter.cs" />
+    <Compile Include="VisualBasicAstWriterParameters.cs" />
+    <Compile Include="VisualBasicAstToken.cs" />
+    <Compile Include="VisualBasicSyntaxError.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="VisualBasicNumberFormatter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="VisualBasicLanguage.cs" />
+    <Compile Include="VisualBasicStringFormatter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbstractCode.Ast\AbstractCode.Ast.csproj">
+      <Project>{a86e8ba2-ad89-40ec-a751-b7f63659ca26}</Project>
+      <Name>AbstractCode.Ast</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbstractCode\AbstractCode.csproj">
+      <Project>{ecc2e86e-b9d5-4fbf-875a-eeaacd98b993}</Project>
+      <Name>AbstractCode</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VisualBasic.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\SymbolElements.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <Modifiers>Public Friend Protected Friend Protected Protected Friend Private Partial Shared Overrides Overridable MustOverride MustInherit NotInheritable ReadOnly WriteOnly Iterator Const Async Custom WithEvents</Modifiers>
+  <MemberIdentifiers>Namespace Class Structure Interface Enum Function Property Sub Event Delegate ByVal ByRef Dim Get Set</MemberIdentifiers>
+  <Keywords>Imports Set As Me New Await Yield Return Nothing GetType If ElseIf Then End Select Case For Each Next Do Until While Loop Exit Continue True False Try Catch Finally Throw SyncLock Using AddHandler RemoveHandler RaiseEvent Handles AddressOf And Or Xor OrElse AndAlso Not Like In ParamArray Void Object Boolean Byte UShort UInteger ULong UIntPtr SByte Short Integer Long IntPtr Single Double Decimal Char String</Keywords>
+ 
+</LanguageData>

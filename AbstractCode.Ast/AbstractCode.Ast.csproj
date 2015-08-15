@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A86E8BA2-AD89-40EC-A751-B7F63659CA26}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AbstractCode.Ast</RootNamespace>
+    <AssemblyName>AbstractCode.Ast</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AstNode.cs" />
+    <Compile Include="AstNodeCollection.cs" />
+    <Compile Include="AstNodeTitle.cs" />
+    <Compile Include="Comment.cs" />
+    <Compile Include="Expressions\ArrayInitializer.cs" />
+    <Compile Include="Expressions\AssignmentExpression.cs" />
+    <Compile Include="Expressions\BaseReferenceExpression.cs" />
+    <Compile Include="Expressions\BinaryOperatorExpression.cs" />
+    <Compile Include="Expressions\CastExpression.cs" />
+    <Compile Include="Expressions\ConditionalExpression.cs" />
+    <Compile Include="Expressions\CreateArrayExpression.cs" />
+    <Compile Include="Expressions\CreateObjectExpression.cs" />
+    <Compile Include="Expressions\DirectionExpression.cs" />
+    <Compile Include="Expressions\ExplicitCastExpression.cs" />
+    <Compile Include="Expressions\Expression.cs" />
+    <Compile Include="Expressions\GetTypeExpression.cs" />
+    <Compile Include="Expressions\IConvertibleToExpression.cs" />
+    <Compile Include="Expressions\IdentifierExpression.cs" />
+    <Compile Include="Expressions\IndexerExpression.cs" />
+    <Compile Include="Expressions\InvocationExpression.cs" />
+    <Compile Include="Expressions\LinqClause.cs" />
+    <Compile Include="Expressions\LinqExpression.cs" />
+    <Compile Include="Expressions\MemberReferenceExpression.cs" />
+    <Compile Include="Expressions\ParenthesizedExpression.cs" />
+    <Compile Include="Expressions\PrimitiveExpression.cs" />
+    <Compile Include="Expressions\SafeCastExpression.cs" />
+    <Compile Include="Expressions\ThisReferenceExpression.cs" />
+    <Compile Include="Expressions\TypeCheckExpression.cs" />
+    <Compile Include="Expressions\UnaryOperatorExpression.cs" />
+    <Compile Include="IAstNode.cs" />
+    <Compile Include="IAstVisitor.cs" />
+    <Compile Include="IOutputFormatter.cs" />
+    <Compile Include="IResolvable.cs" />
+    <Compile Include="IVisitable.cs" />
+    <Compile Include="Members\AbstractMethodDeclaration.cs" />
+    <Compile Include="Members\AccessorDeclaration.cs" />
+    <Compile Include="Members\ConstructorDeclaration.cs" />
+    <Compile Include="Members\CustomAttribute.cs" />
+    <Compile Include="Members\CustomAttributeSection.cs" />
+    <Compile Include="Members\DelegateDeclaration.cs" />
+    <Compile Include="Members\EnumMemberDeclaration.cs" />
+    <Compile Include="Members\EventDeclaration.cs" />
+    <Compile Include="Members\FieldDeclaration.cs" />
+    <Compile Include="Members\IConvertibleToIdentifier.cs" />
+    <Compile Include="Members\ICustomAttributeProvider.cs" />
+    <Compile Include="Members\Identifier.cs" />
+    <Compile Include="Members\IModifierProvider.cs" />
+    <Compile Include="Members\IParameterProvider.cs" />
+    <Compile Include="Members\IDefinitionProvider.cs" />
+    <Compile Include="Members\ITypeParameterProvider.cs" />
+    <Compile Include="Members\IUsingDeclarationProvider.cs" />
+    <Compile Include="Members\IVariableDeclaratorProvider.cs" />
+    <Compile Include="Members\MemberDeclaration.cs" />
+    <Compile Include="Members\MethodDeclaration.cs" />
+    <Compile Include="Members\ModifierElement.cs" />
+    <Compile Include="Members\NamespaceDeclaration.cs" />
+    <Compile Include="Members\ParameterDeclaration.cs" />
+    <Compile Include="Members\PropertyDeclaration.cs" />
+    <Compile Include="Members\TypeDeclaration.cs" />
+    <Compile Include="Members\TypeParameterDeclaration.cs" />
+    <Compile Include="Members\UsingAliasDirective.cs" />
+    <Compile Include="Members\UsingDirective.cs" />
+    <Compile Include="Members\UsingNamespaceDirective.cs" />
+    <Compile Include="Members\VariableDeclarator.cs" />
+    <Compile Include="Parser\AstTokenStream.cs" />
+    <Compile Include="Parser\Grammar.cs" />
+    <Compile Include="Parser\GrammarCompilationContext.cs" />
+    <Compile Include="Parser\GrammarCompilationResult.cs" />
+    <Compile Include="Parser\GrammarCompiler.cs" />
+    <Compile Include="Parser\GrammarData.cs" />
+    <Compile Include="Parser\GrammarDefinition.cs" />
+    <Compile Include="Parser\GrammarElement.cs" />
+    <Compile Include="Parser\GrammarExpression.cs" />
+    <Compile Include="Parser\GrammarReduction.cs" />
+    <Compile Include="Parser\GrammarReductionConflict.cs" />
+    <Compile Include="Parser\IntermediateParserState.cs" />
+    <Compile Include="Parser\Lexer.cs" />
+    <Compile Include="Parser\Lr0Item.cs" />
+    <Compile Include="Parser\Lr1Item.cs" />
+    <Compile Include="Parser\ParserAction.cs" />
+    <Compile Include="Parser\ParserAutomatonSerializer.cs" />
+    <Compile Include="Parser\ParserContext.cs" />
+    <Compile Include="Parser\ParserNode.cs" />
+    <Compile Include="Parser\ParserState.cs" />
+    <Compile Include="Parser\AutomatonSourceParser.cs" />
+    <Compile Include="Parser\ParserAutomaton.cs" />
+    <Compile Include="Parser\ParserTransition.cs" />
+    <Compile Include="Parser\SourceParser.cs" />
+    <Compile Include="AstToken.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleCodeBlockScope.cs" />
+    <Compile Include="SourceAssembly.cs" />
+    <Compile Include="SourceLanguage.cs" />
+    <Compile Include="Statements\AddRemoveHandlerStatement.cs" />
+    <Compile Include="Statements\BlockStatement.cs" />
+    <Compile Include="Statements\CatchClause.cs" />
+    <Compile Include="Statements\ConditionalLoopStatement.cs" />
+    <Compile Include="Statements\DoLoopStatement.cs" />
+    <Compile Include="Statements\EmptyStatement.cs" />
+    <Compile Include="Statements\ExpressionStatement.cs" />
+    <Compile Include="Statements\GotoStatement.cs" />
+    <Compile Include="Statements\IfElseStatement.cs" />
+    <Compile Include="Statements\LabelStatement.cs" />
+    <Compile Include="Statements\LockStatement.cs" />
+    <Compile Include="Statements\ReturnStatement.cs" />
+    <Compile Include="Statements\Statement.cs" />
+    <Compile Include="Statements\SwitchCaseLabel.cs" />
+    <Compile Include="Statements\SwitchSection.cs" />
+    <Compile Include="Statements\SwitchStatement.cs" />
+    <Compile Include="Statements\ThrowStatement.cs" />
+    <Compile Include="Statements\TryCatchStatement.cs" />
+    <Compile Include="Statements\UsingStatement.cs" />
+    <Compile Include="Statements\VariableDeclarationStatement.cs" />
+    <Compile Include="Statements\WhileLoopStatement.cs" />
+    <Compile Include="Statements\YieldStatement.cs" />
+    <Compile Include="SyntaxError.cs" />
+    <Compile Include="CompilationUnit.cs" />
+    <Compile Include="TextOutputFormatter.cs" />
+    <Compile Include="Types\ArrayTypeRankSpecifier.cs" />
+    <Compile Include="Types\ArrayTypeReference.cs" />
+    <Compile Include="Types\ComplexTypeReference.cs" />
+    <Compile Include="Types\IConvertibleToType.cs" />
+    <Compile Include="Types\ITypeArgumentProvider.cs" />
+    <Compile Include="Types\MemberTypeReference.cs" />
+    <Compile Include="Types\PointerTypeReference.cs" />
+    <Compile Include="Types\PrimitiveTypeReference.cs" />
+    <Compile Include="Types\SimpleTypeReference.cs" />
+    <Compile Include="Types\TypeReference.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbstractCode\AbstractCode.csproj">
+      <Project>{ecc2e86e-b9d5-4fbf-875a-eeaacd98b993}</Project>
+      <Name>AbstractCode</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Parser\Algorithms.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Tokens>
+  <Token Value="+" Type="Operator" />
+  <Token Value="-" Type="Operator" />
+  <Token Value="/" Type="Operator" />
+  <Token Value="\" Type="Operator" />
+  <Token Value="*" Type="Operator" />
+  <Token Value="Mod" Type="Operator" />
+  <Token Value="=" Type="Operator" />
+  <Token Value="Or" Type="Operator" />
+  <Token Value="And" Type="Operator" />
+  <Token Value="Xor" Type="Operator" />
+  <Token Value="OrElse" Type="Operator" />
+  <Token Value="AndAlso" Type="Operator" />
+  <Token Value="Not" Type="Operator" />
+  <Token Value="Like" Type="Operator" />
+  <Token Value="AddressOf" Type="Operator" />
+  <Token Value="&amp;" Type="Operator" />
+  <Token Value="&lt;" Type="Operator" />
+  <Token Value="&gt;" Type="Operator" />
+  <Token Value=":" Type="Colon" />
+  <Token Value="&quot;" Type="StartOrEndString" />
+  <Token Value="." Type="MemberAccessor" />
+  <Token Value="," Type="ElementSeparator" />
+  <Token Value="(" Type="LeftParenthese" />
+  <Token Value=")" Type="RightParenthese" />
+  <Token Value="(" Type="LeftBracket" />
+  <Token Value=")" Type="RightBracket" />
+  <Token Value="{" Type="StartScopeBlock" />
+  <Token Value="}" Type="EndScopeBlock" />
+</Tokens>

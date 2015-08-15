@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <Modifiers>public internal protected internal protected protected internal private partial static virtual abstract override sealed readonly const async</Modifiers>
+  <MemberIdentifiers>namespace class struct interface enum var event delegate get set add remove</MemberIdentifiers>
+  <KeywordMapping>using this base new as is try catch finally throw stackalloc sizeof await lock switch case default break continue yield return if else goto do while for foreach true false null typeof unsafe checked unchecked stackalloc ref out params void object bool byte ushort uint ulong UIntPtr sbyte short int long IntPtr long IntPtr float double decimal char string from where select join group order by let</KeywordMapping>
+ 
+</LanguageData>
