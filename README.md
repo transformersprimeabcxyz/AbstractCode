@@ -17,3 +17,13 @@ Features
 Why another compiler front-end?
 ==
 Some of the readers and users might have noticed at this moment that this project is rather similar to [Micorosoft's .NET compiler platform (a.k.a. Roslyn)](https://github.com/dotnet/roslyn) or [ICSharpCode.NRefactory](https://github.com/icsharpcode/NRefactory), and might have elements from [yacc](http://dinosaur.compilertools.net/yacc/), [bison](http://dinosaur.compilertools.net/bison/), [Irony](https://github.com/dotnet/roslyn) and the like. These people are probably wondering why on earth I even started this project. My answer to that is that this project exists purely because I enjoy solving complex programming-related problems, and wanted to try to create a source parser myself, rather than using existing projects. Unlike many source readers (like the Mono C# Compiler used in NRefactory), AbstractCode does not make use of third-party compiler-compilers to construct a parser. The algorithms are based on various articles and courses I've found on the internet, especially from the [Stanfords's CS143 course regarding compiler constructions](http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/) , so a big shoutout to those guys for teaching me how things work!
+
+How do I contribute?
+==
+Liked the project and want to support the development? Here are a few things that you can do:
+- Star the project.
+- Fork the project, make your changes to the code and create a pull request.
+- Find and report bugs.
+- Donate using PayPal, even the tiny bits help a lot! 
+
+[![Donate!](https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VS2P6V5X85QHA)
