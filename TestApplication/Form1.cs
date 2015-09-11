@@ -174,10 +174,10 @@ namespace MyProgram
                 _assembly.CompilationUnits.Remove(_compilationUnit);
                 stopwatch.Start();
                 _document = new ReadOnlyDocument(source.CreateSnapshot());
-                
+
 #if INITIALIZE_OWN_PARSER
                 _rootParserNode = _parser.Parse(
-                    new AstTokenStream(new CSharpLexer(document.CreateReader())));
+                    new AstTokenStream(new CSharpLexer(_document.CreateReader())));
                 stopwatch.Stop();
                 rawParserTreeView.Nodes.Add(CreateParserTreeNode(_rootParserNode));
                 _compilationUnit = (CompilationUnit)_rootParserNode.CreateAstNode();

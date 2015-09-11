@@ -505,19 +505,6 @@ namespace AbstractCode.Ast.CSharp
                     RightParenthese = node.Children[3].Token,
                 });
 
-            var castExpression = new GrammarDefinition("CastExpression",
-                rule: ToElement(OPEN_PARENS)
-                      + typeReference
-                      + ToElement(CLOSE_PARENS)
-                      + primaryExpression,
-                createNode: node => new ExplicitCastExpression
-                {
-                    LeftParenthese = node.Children[0].Token,
-                    TargetType = node.Children[1].CreateAstNode<TypeReference>(),
-                    RightParenthese = node.Children[2].Token,
-                    TargetExpression = node.Children[3].CreateAstNode<Expression>()
-                });
-
             var checkedExpression = new GrammarDefinition("CheckedExpression",
                 rule:
                     ToElement(CHECKED) + ToElement(OPEN_PARENS) + expression +
@@ -571,7 +558,6 @@ namespace AbstractCode.Ast.CSharp
                 | typeofExpression
                 // | defaultExpression
                 | sizeofExpression
-                // | castExpression
                 | checkedExpression
                 | uncheckedExpression
                 | stackAllocExpression
@@ -591,8 +577,12 @@ namespace AbstractCode.Ast.CSharp
                 rule: ToElement(OP_INC)
                       | ToElement(OP_DEC));
 
+
+            var castExpression = new GrammarDefinition("CastExpression");
+            
             var unaryOperatorExpression = new GrammarDefinition("UnaryOperatorExpression",
                 rule: primaryExpression
+                      | castExpression
                       | (preFixUnaryOperator + primaryExpression)
                       | (primaryExpression + postFixUnaryOperator),
                 createNode: node =>
@@ -618,6 +608,18 @@ namespace AbstractCode.Ast.CSharp
                     }
                     return result;
                 });
+
+            castExpression.Rule = ToElement(OPEN_PARENS)
+                                  + typeNameExpression
+                                  + ToElement(CLOSE_PARENS)
+                                  + unaryOperatorExpression;
+            castExpression.CreateNode = node => new ExplicitCastExpression
+            {
+                LeftParenthese = node.Children[0].Token,
+                TargetType = ((IConvertibleToType)node.Children[1].CreateAstNode()).ToTypeReference(),
+                RightParenthese = node.Children[2].Token,
+                TargetExpression = node.Children[3].CreateAstNode<Expression>()
+            };
 
             var multiplicativeOperator = new GrammarDefinition("MultiplicativeOperator",
                 rule: ToElement(STAR)
@@ -1697,7 +1699,7 @@ namespace AbstractCode.Ast.CSharp
                     return result;
                 });
 
-            var typeOrNamespaceDeclaration = new GrammarDefinition("TtypeOrNamespaceDeclaration",
+            var typeOrNamespaceDeclaration = new GrammarDefinition("TypeOrNamespaceDeclaration",
                 rule: namespaceDeclaration
                       | typeDeclaration);
             typeOrNamespaceDeclarationList.Rule = typeOrNamespaceDeclaration
@@ -1713,7 +1715,7 @@ namespace AbstractCode.Ast.CSharp
                                            | variableInitializerList
                                            + ToElement(COMMA)
                                            + variableInitializer;
-            var variableInitializerListOptional = new GrammarDefinition("variableInitializerListOptional",
+            var variableInitializerListOptional = new GrammarDefinition("VariableInitializerListOptional",
                 rule: null | variableInitializerList);
 
             arrayInitializer.Rule = ToElement(OPEN_BRACE)

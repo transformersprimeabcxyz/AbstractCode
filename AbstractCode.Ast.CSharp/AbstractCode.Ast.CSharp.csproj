@@ -39,9 +39,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TUP.AsmResolver">
-      <HintPath>..\AbstractCode.Assembly\bin\Debug\TUP.AsmResolver.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpAstWriter.cs" />
