@@ -118,6 +118,7 @@
     <Compile Include="Parser\GrammarReductionConflict.cs" />
     <Compile Include="Parser\IntermediateParserState.cs" />
     <Compile Include="Parser\Lexer.cs" />
+    <Compile Include="Parser\LexerBag.cs" />
     <Compile Include="Parser\Lr0Item.cs" />
     <Compile Include="Parser\Lr1Item.cs" />
     <Compile Include="Parser\ParserAction.cs" />

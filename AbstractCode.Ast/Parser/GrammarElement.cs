@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with AbstractCode.  If not, see <http://www.gnu.org/licenses/>.
 // 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +22,7 @@ namespace AbstractCode.Ast.Parser
 {
     public delegate AstNode CreateAstNodeDelegate(ParserNode node);
 
-    public abstract class GrammarElement 
+    public abstract class GrammarElement
     {
         protected GrammarElement(string name)
         {
@@ -30,7 +32,6 @@ namespace AbstractCode.Ast.Parser
         public string Name
         {
             get;
-            set;
         }
 
         public IEnumerable<TokenGrammarElement> GetFirstItems()
@@ -44,7 +45,7 @@ namespace AbstractCode.Ast.Parser
         {
             return Name;
         }
-        
+
         public static GrammarExpression operator +(GrammarElement a, GrammarElement b)
         {
             var newExpression = new GrammarExpression();
@@ -106,5 +107,41 @@ namespace AbstractCode.Ast.Parser
                 yield break;
             yield return this;
         }
+
+        public CustomActionGrammarElement WithAction(CustomActionDelegate action)
+        {
+            return new CustomActionGrammarElement(this, action);
+        }
+
     }
+
+    public delegate void CustomActionDelegate(ParserContext context);
+
+    public class CustomActionGrammarElement : TokenGrammarElement
+    {
+        public CustomActionGrammarElement(TokenGrammarElement baseElement, CustomActionDelegate action)
+            : base(baseElement.Name)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+            BaseElement = baseElement;
+            Action = action;
+        }
+
+        public TokenGrammarElement BaseElement
+        {
+            get;
+        }
+
+        public CustomActionDelegate Action
+        {
+            get;
+        }
+
+        public override IEnumerable<TokenGrammarElement> GetFirstItems(IList<GrammarElement> alreadyTraversedItems)
+        {
+            return BaseElement.GetFirstItems(alreadyTraversedItems);
+        }
+    }
+
 }

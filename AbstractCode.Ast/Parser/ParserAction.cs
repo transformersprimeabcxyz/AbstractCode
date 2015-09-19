@@ -41,9 +41,16 @@ namespace AbstractCode.Ast.Parser
             get;
         }
 
+        public CustomActionDelegate CustomAction
+        {
+            get;
+            set;
+        }
+
         public override void Execute(ParserContext context)
         {
             context.SendLogMessage(MessageSeverity.Message, ToString());
+            CustomAction?.Invoke(context);
             context.ParserStack.Push(context.CurrentNode);
             context.CurrentState = context.CurrentNode.State = NextState;
             context.CurrentNode = null;
@@ -122,8 +129,6 @@ namespace AbstractCode.Ast.Parser
     {
         public override void Execute(ParserContext context)
         {
-            
-
         }
 
         public override string ToString()

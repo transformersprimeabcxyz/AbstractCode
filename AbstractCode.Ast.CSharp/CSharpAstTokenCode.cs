@@ -13,15 +13,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with AbstractCode.  If not, see <http://www.gnu.org/licenses/>.
 // 
+
 namespace AbstractCode.Ast.CSharp
 {
     // Capital names are being used to distinguish easily between tokens and grammar definitions in the C# grammar.
-
+    // ReSharper disable InconsistentNaming
     public enum CSharpAstTokenCode
     {
         EOF,
         NONE,
         ERROR,
+        NEWLINE,
 
         FIRST_KEYWORD,
         ABSTRACT,
@@ -193,6 +195,7 @@ namespace AbstractCode.Ast.CSharp
         OPEN_PARENS_CAST,
         GENERIC_DIMENSION,
         DEFAULT_COLON,
-        OPEN_BRACKET_EXPR
+        OPEN_BRACKET_EXPR,
     }
+    // ReSharper restore InconsistentNaming
 }

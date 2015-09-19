@@ -157,5 +157,10 @@ namespace AbstractCode.Ast.CSharp
             var token = other as CSharpAstToken;
             return token != null && Code == token.Code;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} ({1})", Value, Code);
+        }
     }
 }

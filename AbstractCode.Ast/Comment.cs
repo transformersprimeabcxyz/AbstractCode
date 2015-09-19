@@ -70,7 +70,11 @@ namespace AbstractCode.Ast
         {
             return visitor.VisitComment(this, data);
         }
-        
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} (CommentType = {CommentType}, Contents = \"{Contents}\")";
+        }
     }
 
     public enum CommentType

@@ -101,7 +101,13 @@ namespace AbstractCode.Ast.Parser
                 shifter.NextItem = nextState.Items.First(x => x.Kernel == shifter.Kernel.NextItem);
                 context.GetOrCreateTransition(state, currentElement, nextState);
                 if (!state.State.Actions.ContainsKey(currentElement))
-                    state.State.Actions[currentElement] = new ShiftParserAction(nextState.State);
+                {
+                    var action = new ShiftParserAction(nextState.State);
+                    var customActionElement = currentElement as CustomActionGrammarElement;
+                    if (customActionElement != null)
+                        action.CustomAction = customActionElement.Action;
+                    state.State.Actions[currentElement] = action;
+                }
             }
         }
 

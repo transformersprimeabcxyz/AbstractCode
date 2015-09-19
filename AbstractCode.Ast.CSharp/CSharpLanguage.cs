@@ -405,9 +405,12 @@ namespace AbstractCode.Ast.CSharp
 
         public override CompilationUnit Parse(IDocument input)
         {
-            return Parser.Parse(new CSharpLexer(input.CreateReader())).CreateAstNode<CompilationUnit>();
+            var lexer = new CSharpLexer(input.CreateReader());
+            var compilationUnit = Parser.Parse(lexer).CreateAstNode<CompilationUnit>();
+            lexer.SpecialBag.InsertNodesIntoAstNode(compilationUnit);
+            return compilationUnit;
         }
-        
+
         public override void UpdateSyntaxTree(CompilationUnit compilationUnit, IDocument input, TextRange range)
         {
             throw new NotImplementedException();

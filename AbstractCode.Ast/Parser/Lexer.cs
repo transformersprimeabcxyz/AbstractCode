@@ -29,6 +29,7 @@ namespace AbstractCode.Ast.Parser
         {
             _reader = reader;
             Location = new TextLocation(1, 1);
+            SpecialBag = new LexerBag();
         }
 
         public int Offset
@@ -41,6 +42,11 @@ namespace AbstractCode.Ast.Parser
         {
             get;
             private set;
+        }
+
+        public LexerBag SpecialBag
+        {
+            get;
         }
 
         protected void StartReadBuffer()

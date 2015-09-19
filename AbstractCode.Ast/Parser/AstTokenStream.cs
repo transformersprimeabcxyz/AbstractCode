@@ -19,14 +19,17 @@ namespace AbstractCode.Ast.Parser
 {
     public class AstTokenStream
     {
-        private readonly Lexer _lexer;
-
         public AstTokenStream(Lexer lexer)
         {
             if (lexer == null)
                 throw new ArgumentNullException(nameof(lexer));
-            _lexer = lexer;
+            Lexer = lexer;
             Advance();
+        }
+
+        public Lexer Lexer
+        {
+            get;
         }
 
         public AstToken Current
@@ -37,7 +40,7 @@ namespace AbstractCode.Ast.Parser
 
         public void Advance()
         {
-            Current = _lexer.ReadNextToken();
+            Current = Lexer.ReadNextToken();
         }
     }
 }

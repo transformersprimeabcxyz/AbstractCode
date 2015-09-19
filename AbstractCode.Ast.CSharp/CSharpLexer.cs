@@ -21,6 +21,7 @@ using AbstractCode.Ast.Parser;
 
 namespace AbstractCode.Ast.CSharp
 {
+
     public class CSharpLexer : Lexer
     {
         private const string _extraWordIndicators = "_@";
@@ -28,6 +29,13 @@ namespace AbstractCode.Ast.CSharp
         public CSharpLexer(TextReader reader) 
             : base(reader)
         {
+        }
+
+        protected override void OnLineTerminated()
+        {
+            SpecialBag.SpecialNodes.Add(new CSharpAstToken(CSharpAstTokenCode.NEWLINE, "\r\n",
+                new TextRange(Location, new TextLocation(Location.Line + 1, 1))));
+            base.OnLineTerminated();
         }
 
         public override AstToken ReadNextToken()
@@ -47,7 +55,10 @@ namespace AbstractCode.Ast.CSharp
                     var node = TokenizeForwardSlash();
                     token = node as CSharpAstToken;
                     if (token == null)
+                    {
+                        SpecialBag.SpecialNodes.Add(node);
                         continue; // TODO: expose comment nodes.
+                    }
                 }
                 else if (char.IsDigit(currentChar))
                 {
@@ -211,11 +222,20 @@ namespace AbstractCode.Ast.CSharp
             // read second "/"
             Read();
 
+            var commentType = CommentType.SingleLine;
+            char next;
+            Peek(out next);
+            if (next == '/')
+            {
+                Read();
+                commentType = CommentType.Documentation;
+            }
+
             // get contents
             TextRange range;
             var contents = ReadCharacters(x => !"\r\n".Contains(x), out range);
 
-            return new Comment(contents, CommentType.SingleLine);
+            return new Comment(contents, commentType);
         }
 
         private AstNode ReadCommentBlock()

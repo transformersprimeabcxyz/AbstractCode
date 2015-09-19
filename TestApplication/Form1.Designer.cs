@@ -77,9 +77,11 @@ namespace AbstractCode.TestApplication
             this.sourceTextBox.Name = "sourceTextBox";
             this.sourceTextBox.Size = new System.Drawing.Size(411, 502);
             this.sourceTextBox.TabIndex = 0;
+            this.sourceTextBox.TabStop = false;
             this.sourceTextBox.Text = "";
             this.sourceTextBox.WordWrap = false;
             this.sourceTextBox.SelectionChanged += new System.EventHandler(this.SourceTextBoxOnSelectionChanged);
+            this.sourceTextBox.TextChanged += new System.EventHandler(this.SourceTextBoxOnTextChanged);
             // 
             // splitContainer1
             // 
