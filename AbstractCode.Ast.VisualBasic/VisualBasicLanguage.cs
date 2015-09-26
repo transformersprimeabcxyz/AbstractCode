@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using AbstractCode.Ast.Expressions;
 using AbstractCode.Ast.Members;
+using AbstractCode.Ast.Parser;
 using AbstractCode.Ast.Types;
 using AbstractCode.Ast.VisualBasic.Members;
 
@@ -303,12 +304,39 @@ namespace AbstractCode.Ast.VisualBasic
         private readonly LanguageData _data;
         private readonly VisualBasicStringFormatter _stringFormatter;
         private readonly VisualBasicNumberFormatter _numberFormatter;
+        private AutomatonSourceParser _parser;
 
         private VisualBasicLanguage()
         {
             _data = LanguageData.FromXml(Properties.Resources.VisualBasic);
             _stringFormatter = new VisualBasicStringFormatter();
             _numberFormatter = new VisualBasicNumberFormatter();
+            Grammar = new VisualBasicGrammar();
+        }
+
+        public VisualBasicGrammar Grammar
+        {
+            get;
+        }
+
+        public AutomatonSourceParser Parser
+        {
+            get
+            {
+                if (_parser != null)
+                    return _parser;
+
+#if USE_PRECOMPILED_VB_PARSER
+                using (var stream = new MemoryStream(Properties.Resources.Automaton))
+                {
+                    var serializer = new ParserAutomatonSerializer(new GrammarData(Grammar));
+                    _parser = new AutomatonSourceParser(serializer.Deserialize(stream));
+                }
+#else
+                _parser = new AutomatonSourceParser(Grammar);
+#endif
+                return _parser;
+            }
         }
 
         public override string Name

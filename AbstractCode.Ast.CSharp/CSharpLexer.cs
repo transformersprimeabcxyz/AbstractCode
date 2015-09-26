@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using AbstractCode.Ast.Parser;
+using static AbstractCode.Ast.CSharp.CSharpAstTokenCode;
 
 namespace AbstractCode.Ast.CSharp
 {
@@ -33,7 +34,7 @@ namespace AbstractCode.Ast.CSharp
 
         protected override void OnLineTerminated()
         {
-            SpecialBag.SpecialNodes.Add(new CSharpAstToken(CSharpAstTokenCode.NEWLINE, "\r\n",
+            SpecialBag.SpecialNodes.Add(new CSharpAstToken(NEWLINE, "\r\n",
                 new TextRange(Location, new TextLocation(Location.Line + 1, 1))));
             base.OnLineTerminated();
         }
@@ -43,7 +44,7 @@ namespace AbstractCode.Ast.CSharp
             while (true)
             {
                 if (!MoveToNextToken())
-                    return new CSharpAstToken(CSharpAstTokenCode.EOF, string.Empty, new TextRange(Location, Location));
+                    return new CSharpAstToken(EOF, string.Empty, new TextRange(Location, Location));
 
                 char currentChar;
                 Peek(out currentChar);
@@ -57,7 +58,7 @@ namespace AbstractCode.Ast.CSharp
                     if (token == null)
                     {
                         SpecialBag.SpecialNodes.Add(node);
-                        continue; // TODO: expose comment nodes.
+                        continue; 
                     }
                 }
                 else if (char.IsDigit(currentChar))
@@ -74,10 +75,10 @@ namespace AbstractCode.Ast.CSharp
 
                         switch (keywordCode)
                         {
-                            case CSharpAstTokenCode.TRUE:
+                            case TRUE:
                                 token.UserData["InterpretedValue"] = true;
                                 break;
-                            case CSharpAstTokenCode.FALSE:
+                            case FALSE:
                                 token.UserData["InterpretedValue"] = false;
                                 break;
                         }
@@ -110,7 +111,7 @@ namespace AbstractCode.Ast.CSharp
         {
             TextRange range;
             string token = ReadCharacters(IsWordElement, out range);
-            return new CSharpAstToken(CSharpAstTokenCode.IDENTIFIER, token, range);
+            return new CSharpAstToken(IDENTIFIER, token, range);
         }
 
         protected CSharpAstToken ReadNumberToken()
@@ -142,7 +143,7 @@ namespace AbstractCode.Ast.CSharp
 
             }, out range);
             
-            var astToken = new CSharpAstToken(CSharpAstTokenCode.LITERAL, token, range);
+            var astToken = new CSharpAstToken(LITERAL, token, range);
             astToken.UserData["InterpretedValue"] = CSharpLanguage.Instance.NumberFormatter.EvaluateFormattedNumber(token);
             return astToken;
         }
@@ -182,7 +183,7 @@ namespace AbstractCode.Ast.CSharp
                 stringToken += Read();
             var endLocation = Location;
 
-            var astToken = new CSharpAstToken(CSharpAstTokenCode.LITERAL, stringToken, new TextRange(startLocation, endLocation));
+            var astToken = new CSharpAstToken(LITERAL, stringToken, new TextRange(startLocation, endLocation));
             astToken.UserData["InterpretedValue"] = CSharpLanguage.Instance.StringFormatter.EvaluateFormattedString(stringToken);
             return astToken;
         }
@@ -206,10 +207,10 @@ namespace AbstractCode.Ast.CSharp
                     break;
                 case '=':
                     Read();
-                    node = new CSharpAstToken(CSharpAstTokenCode.OP_DIV_ASSIGN, "/=");
+                    node = new CSharpAstToken(OP_DIV_ASSIGN, "/=");
                     break;
                 default:
-                    node = new CSharpAstToken(CSharpAstTokenCode.DIV, "/");
+                    node = new CSharpAstToken(DIV, "/");
                     break;
             }
             var end = Location;
@@ -274,30 +275,30 @@ namespace AbstractCode.Ast.CSharp
             switch (currentChar)
             {
                 case '{':
-                    return CSharpAstTokenCode.OPEN_BRACE;
+                    return OPEN_BRACE;
                 case '}':
-                    return CSharpAstTokenCode.CLOSE_BRACE;
+                    return CLOSE_BRACE;
                 case '(':
-                    return CSharpAstTokenCode.OPEN_PARENS;
+                    return OPEN_PARENS;
                 case ')':
-                    return CSharpAstTokenCode.CLOSE_PARENS;
+                    return CLOSE_PARENS;
                 case '[':
-                    return CSharpAstTokenCode.OPEN_BRACKET;
+                    return OPEN_BRACKET;
                 case ']':
-                    return CSharpAstTokenCode.CLOSE_BRACKET;
+                    return CLOSE_BRACKET;
                 case ',':
-                    return CSharpAstTokenCode.COMMA;
+                    return COMMA;
                 case '+':
                     switch (nextChar)
                     {
                         case '+':
-                            code = CSharpAstTokenCode.OP_INC;
+                            code = OP_INC;
                             break;
                         case '=':
-                            code = CSharpAstTokenCode.OP_ADD_ASSIGN;
+                            code = OP_ADD_ASSIGN;
                             break;
                         default:
-                            return CSharpAstTokenCode.PLUS;
+                            return PLUS;
                     }
                     Read();
                     return code;
@@ -305,49 +306,49 @@ namespace AbstractCode.Ast.CSharp
                     switch (nextChar)
                     {
                         case '>':
-                            code = CSharpAstTokenCode.OP_PTR;
+                            code = OP_PTR;
                             break;
                         case '-':
-                            code = CSharpAstTokenCode.OP_DEC;
+                            code = OP_DEC;
                             break;
                         case '=':
-                            code = CSharpAstTokenCode.OP_SUB_ASSIGN;
+                            code = OP_SUB_ASSIGN;
                             break;
                         default:
-                            return CSharpAstTokenCode.MINUS;
+                            return MINUS;
                     }
                     Read();
                     return code;
                 case '*':
                     if (nextChar == '=')
-                        code = CSharpAstTokenCode.OP_MULT_ASSIGN;
+                        code = OP_MULT_ASSIGN;
                     else
-                        return CSharpAstTokenCode.STAR;
+                        return STAR;
                     Read();
                     return code;
                 case '%':
                     if (nextChar == '=')
-                        code = CSharpAstTokenCode.OP_MOD_ASSIGN;
+                        code = OP_MOD_ASSIGN;
                     else
-                        return CSharpAstTokenCode.PERCENT;
+                        return PERCENT;
                     Read();
                     return code;
                 case '<':
                     switch (nextChar)
                     {
                         case '=':
-                            code = CSharpAstTokenCode.OP_LE;
+                            code = OP_LE;
                             break;
                         case '<':
                             Read();
                             Peek(out nextChar);
                             if (nextChar == '=')
-                                code = CSharpAstTokenCode.OP_SHIFT_LEFT_ASSIGN;
+                                code = OP_SHIFT_LEFT_ASSIGN;
                             else
-                                return CSharpAstTokenCode.OP_SHIFT_LEFT;
+                                return OP_SHIFT_LEFT;
                             break;
                         default:
-                            return CSharpAstTokenCode.OP_LT;
+                            return OP_LT;
                     }
                     Read();
                     return code;
@@ -355,18 +356,18 @@ namespace AbstractCode.Ast.CSharp
                     switch (nextChar)
                     {
                         case '=':
-                            code = CSharpAstTokenCode.OP_GE;
+                            code = OP_GE;
                             break;
                         case '>':
                             Read();
                             Peek(out nextChar);
                             if (nextChar == '=')
-                                code =  CSharpAstTokenCode.OP_SHIFT_RIGHT_ASSIGN;
+                                code =  OP_SHIFT_RIGHT_ASSIGN;
                             else
-                                return CSharpAstTokenCode.OP_SHIFT_RIGHT;
+                                return OP_SHIFT_RIGHT;
                             break;
                         default:
-                            return CSharpAstTokenCode.OP_GT;
+                            return OP_GT;
                     }
                     Read();
                     return code;
@@ -374,13 +375,13 @@ namespace AbstractCode.Ast.CSharp
                     switch (nextChar)
                     {
                         case '=':
-                            code = CSharpAstTokenCode.OP_AND_ASSIGN;
+                            code = OP_AND_ASSIGN;
                             break;
                         case '&':
-                            code = CSharpAstTokenCode.OP_AND;
+                            code = OP_AND;
                             break;
                         default:
-                            return CSharpAstTokenCode.BITWISE_AND;
+                            return BITWISE_AND;
                     }
                     Read();
                     return code;
@@ -388,74 +389,74 @@ namespace AbstractCode.Ast.CSharp
                     switch (nextChar)
                     {
                         case '=':
-                            code = CSharpAstTokenCode.OP_OR_ASSIGN;
+                            code = OP_OR_ASSIGN;
                             break;
                         case '|':
-                            code = CSharpAstTokenCode.OP_OR;
+                            code = OP_OR;
                             break;
                         default:
-                            return CSharpAstTokenCode.BITWISE_OR;
+                            return BITWISE_OR;
                     }
                     Read();
                     return code;
                 case '^':
                     if (nextChar == '=')
-                        code = CSharpAstTokenCode.OP_XOR_ASSIGN;
+                        code = OP_XOR_ASSIGN;
                     else
-                        return CSharpAstTokenCode.CARRET;
+                        return CARRET;
                     Read();
                     return code;
                 case '!':
                     if (nextChar == '=')
                     {
                         Read();
-                        return CSharpAstTokenCode.OP_NOTEQUALS;
+                        return OP_NOTEQUALS;
                     }
-                    return CSharpAstTokenCode.BANG;
+                    return BANG;
                 case '=':
                     switch (nextChar)
                     {
                         case '=':
-                            code = CSharpAstTokenCode.OP_EQUALS;
+                            code = OP_EQUALS;
                             break;
                         case '>':
-                            code = CSharpAstTokenCode.ARROW;
+                            code = ARROW;
                             break;
                         default:
-                            return CSharpAstTokenCode.EQUALS;
+                            return EQUALS;
                     }
                     Read();
                     return code;
                 case ':':
                     if (nextChar == ':')
-                        code = CSharpAstTokenCode.DOUBLE_COLON;
+                        code = DOUBLE_COLON;
                     else
-                        return CSharpAstTokenCode.COLON;
+                        return COLON;
                     Read();
                     return code;
                 case ';':
-                    return CSharpAstTokenCode.SEMICOLON;
+                    return SEMICOLON;
                 case '.':
-                    return CSharpAstTokenCode.DOT;
+                    return DOT;
                 case '?':
                     switch (nextChar)
                     {
                         case '?':
-                            code = CSharpAstTokenCode.OP_COALESCING;
+                            code = OP_COALESCING;
                             break;
                         case '.':
-                            code = CSharpAstTokenCode.INTERR_OPERATOR;
+                            code = INTERR_OPERATOR;
                             break;
                         default:
-                            return CSharpAstTokenCode.INTERR;
+                            return INTERR;
                     }
                     Read();
                     return code;
                 case '~':
-                    return CSharpAstTokenCode.TILDE;
+                    return TILDE;
             }
 
-            return CSharpAstTokenCode.ERROR;
+            return ERROR;
         }
     }
 }

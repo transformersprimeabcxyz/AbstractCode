@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VisualBasicLexer.cs" />
     <Compile Include="IVisualBasicVisitable.cs" />
     <Compile Include="Members\AccessorDeclaration.cs" />
     <Compile Include="Members\ConstructorDeclaration.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="VisualBasicAstWriter.cs" />
     <Compile Include="VisualBasicAstWriterParameters.cs" />
     <Compile Include="VisualBasicAstToken.cs" />
+    <Compile Include="VisualBasicGrammar.cs" />
     <Compile Include="VisualBasicSyntaxError.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="VisualBasicNumberFormatter.cs" />

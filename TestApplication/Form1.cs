@@ -81,7 +81,7 @@ namespace MyProgram
 #if INITIALIZE_OWN_PARSER
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var result = GrammarCompiler.Compile(new CSharpGrammar());
+            var result = GrammarCompiler.Compile(new VisualBasicGrammar());
             stopwatch.Stop();
 
             foreach (var conflict in result.CompilationContext.Conflicts)
@@ -94,7 +94,7 @@ namespace MyProgram
                 result.CompilationContext.Conflicts.Count);
 
             _parser = new AutomatonSourceParser(result.Automaton);
-            _parser.EnableLogging = false;
+            _parser.EnableLogging = true;
 
             const string logFormat = "{0,-5} | {1, -30} | {2, -30} | {3, -30}";
             Console.WriteLine(logFormat, "State", "Current node", "Top of stack", "Message");
@@ -135,9 +135,9 @@ namespace MyProgram
 
         private TreeNode CreateSyntaxTreeNode(AstNode astNode)
         {
-            var treeNode = new TreeNode(astNode is AstToken ? 
-                astNode.ToString() : 
-                string.Format("{0} : {1}", astNode.Title.Name, astNode));
+            var treeNode = new TreeNode(astNode is AstToken || astNode is Comment ? 
+                astNode.ToString() :
+                $"{astNode.Title.Name} : {astNode}");
 
             treeNode.Tag = astNode;
 
@@ -177,7 +177,7 @@ namespace MyProgram
 
 #if INITIALIZE_OWN_PARSER
                 _rootParserNode = _parser.Parse(
-                    new AstTokenStream(new CSharpLexer(_document.CreateReader())));
+                    new AstTokenStream(new VisualBasicLexer(_document.CreateReader())));
                 stopwatch.Stop();
                 rawParserTreeView.Nodes.Add(CreateParserTreeNode(_rootParserNode));
                 _compilationUnit = (CompilationUnit)_rootParserNode.CreateAstNode();
@@ -344,6 +344,11 @@ namespace MyProgram
                 label3.Text =
                     $"Offset: {sourceTextBox.SelectionStart}, Line: {textLocation.Line}, Column: {textLocation.Column}";
             }
+        }
+
+        private void SourceTextBoxOnTextChanged(object sender, EventArgs e)
+        {
+            _document = null;
         }
     }
 }

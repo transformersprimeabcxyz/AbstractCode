@@ -14,10 +14,31 @@
 // along with AbstractCode.  If not, see <http://www.gnu.org/licenses/>.
 // 
 
+using System;
+using System.Collections.Generic;
+using static AbstractCode.Ast.VisualBasic.VisualBasicAstTokenCode;
+
 namespace AbstractCode.Ast.VisualBasic
 {
     public class VisualBasicAstToken : AstToken
     {
+        public static readonly Dictionary<string, VisualBasicAstTokenCode> KeywordMapping =
+            new Dictionary<string, VisualBasicAstTokenCode>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["and"] = BITWISE_AND,
+                ["andalso"] = OP_ANDALSO,
+                ["false"] = FALSE,
+                ["if"] = IF,
+                ["iff"] = IFF,
+                ["me"] = ME,
+                ["mod"] = MOD,
+                ["mybase"] = MYBASE,
+                ["not"] = NOT,
+                ["or"] = BITWISE_OR,
+                ["orelse"] = OP_ORELSE,
+                ["true"] = TRUE,
+            };
+
         public VisualBasicAstToken(VisualBasicAstTokenCode code, string value, TextRange range)
             : base(value, range)
         {
