@@ -20,13 +20,12 @@ namespace AbstractCode.Ast.Types
     {
         public ArrayTypeReference()
         {
-
         }
 
         public ArrayTypeReference(TypeReference baseType)
             : base(baseType)
         {
-
+            RankSpecifier = new ArrayTypeRankSpecifier(1);
         }
 
         public override string Name

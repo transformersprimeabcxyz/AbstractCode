@@ -2,6 +2,8 @@ AbstractCode
 ==
 AbstractCode is an open source compiler front-end that allows you to set up a compiler, interpreter or analyser for code written in any programming language, using a consistent type system.
 
+AbstractCode is released under the LGPLv3 license.
+
 History
 ==
 Primarily the goal of this project was to provide a centralised type system and robust parser engine for [LiteDevelop](https://github.com/JerreS/LiteDevelop), an open source Integrated Development Environment (IDE), to make certain features like good provision of suggestions, detection of syntax errors, and refactory of source code, possible. 
