@@ -428,6 +428,7 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.WriteToken("(");
             expression.Expression.AcceptVisitor(this);
             Formatter.WriteToken(")");
+            Formatter.EndNode();
         }
 
         public void VisitPrimitiveExpression(PrimitiveExpression expression)

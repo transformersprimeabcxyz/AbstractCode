@@ -598,6 +598,7 @@ namespace AbstractCode.Ast.CSharp
             Formatter.WriteToken("(");
             expression.Expression.AcceptVisitor(this);
             Formatter.WriteToken(")");
+            Formatter.EndNode();
         }
 
         public void VisitPrimitiveExpression(PrimitiveExpression expression)
@@ -1486,7 +1487,7 @@ namespace AbstractCode.Ast.CSharp
         public void VisitAstToken(AstToken token)
         {
             Formatter.StartNode(token);
-            Formatter.WriteToken(token.Value);
+            //Formatter.WriteToken(token.Value);
             Formatter.EndNode();
         }
 

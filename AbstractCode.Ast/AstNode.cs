@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AbstractCode.Ast.Expressions;
 using AbstractCode.Ast.Members;
 using AbstractCode.Collections.Generic;
 using AbstractCode.Symbols;
