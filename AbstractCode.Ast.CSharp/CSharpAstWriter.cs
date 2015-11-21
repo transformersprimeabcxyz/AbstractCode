@@ -173,6 +173,11 @@ namespace AbstractCode.Ast.CSharp
         public void VisitDefaultExpression(Expressions.DefaultExpression expression)
         {
             Formatter.StartNode(expression);
+            Formatter.WriteKeyword("default");
+            Formatter.WriteToken("(");
+            expression.TargetType.AcceptVisitor(this);
+            Formatter.WriteToken(")");
+            Formatter.EndNode();
         }
 
         public void VisitForLoopStatement(Statements.ForLoopStatement statement)
@@ -1224,7 +1229,7 @@ namespace AbstractCode.Ast.CSharp
             if (statement.FalseBlock != null)
             {
                 // TODO: make configurable
-                //Formatter.WriteLine();
+                Formatter.WriteLine();
                 Formatter.WriteKeyword("else");
                 WriteEmbeddedStatement(statement.FalseBlock);
             }
