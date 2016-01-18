@@ -40,6 +40,18 @@ namespace AbstractCode.Ast.Members
             Arguments.AddRange(arguments);
         }
 
+        public CustomAttributeVariant Variant
+        {
+            get;
+            set;
+        }
+
+        public AstToken VariantKeyword
+        {
+            get { return GetChildByTitle(AstNodeTitles.Keyword); }
+            set { SetChildByTitle(AstNodeTitles.Keyword, value); }
+        }
+
         public TypeReference Type
         {
             get { return GetChildByTitle(AstNodeTitles.Type); }
@@ -67,6 +79,7 @@ namespace AbstractCode.Ast.Members
         {
             var attribute = other as CustomAttribute;
             return attribute != null
+                   && Variant == attribute.Variant
                    && Type.MatchOrNull(attribute.Type)
                    && Arguments.Match(attribute.Arguments);
         }
@@ -85,5 +98,12 @@ namespace AbstractCode.Ast.Members
         {
             return visitor.VisitCustomAttribute(this, data);
         }
+    }
+
+    public enum CustomAttributeVariant
+    {
+        Normal,
+        Module,
+        Assembly,
     }
 }

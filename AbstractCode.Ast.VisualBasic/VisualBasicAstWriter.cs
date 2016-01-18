@@ -44,23 +44,17 @@ namespace AbstractCode.Ast.VisualBasic
             get;
         }
 
-        private void WriteNodes(IEnumerable<AstNode> nodes, bool newline = false)
+        private void WriteNodes(IEnumerable<AstNode> nodes, bool elementsOnNewLine = false)
         {
-            foreach (var node in nodes)
-            {
-                node.AcceptVisitor(this);
-
-                if (newline)
-                    Formatter.WriteLine();
-            }
+            WriteSeparatedNodes(nodes, elementsOnNewLine ? (Action)Formatter.WriteLine : () => { });
         }
 
-        private void WriteCommaSeparatedNodes(IEnumerable<AstNode> nodes, bool newline = false)
+        private void WriteCommaSeparatedNodes(IEnumerable<AstNode> nodes, bool elementsOnNewLine = false)
         {
-            WriteStringSeparatedNodes(nodes, () =>
+            WriteSeparatedNodes(nodes, () =>
             {
                 Formatter.WriteToken(",");
-                if (newline)
+                if (elementsOnNewLine)
                     Formatter.WriteLine();
                 else
                     Formatter.WriteSpace();
@@ -69,27 +63,68 @@ namespace AbstractCode.Ast.VisualBasic
 
         private void WriteSpaceSeparatedNodes(IEnumerable<AstNode> nodes)
         {
-            WriteStringSeparatedNodes(nodes, Formatter.WriteSpace);
+            WriteSeparatedNodes(nodes, Formatter.WriteSpace);
         }
 
-        private void WriteStringSeparatedNodes(IEnumerable<AstNode> nodes, Action writeSeparator)
+        private void WriteSeparatedNodes(IEnumerable<AstNode> nodes, Action writeSeparator)
         {
-            bool addSeparator = false;
-            foreach (var node in nodes)
+            var nodesArray = nodes.ToArray();
+            for (int index = 0; index < nodesArray.Length; index++)
             {
-                if (addSeparator)
-                    writeSeparator();
+                var node = nodesArray[index];
 
                 node.AcceptVisitor(this);
-                addSeparator = true;
+                if (index < nodesArray.Length - 1)
+                    writeSeparator();
             }
         }
+
+        //private void WriteNodes(IEnumerable<AstNode> nodes, bool newline = false)
+        //{
+        //    foreach (var node in nodes)
+        //    {
+        //        node.AcceptVisitor(this);
+
+        //        if (newline)
+        //            Formatter.WriteLine();
+        //    }
+        //}
+
+        //private void WriteCommaSeparatedNodes(IEnumerable<AstNode> nodes, bool newline = false)
+        //{
+        //    WriteStringSeparatedNodes(nodes, () =>
+        //    {
+        //        Formatter.WriteToken(",");
+        //        if (newline)
+        //            Formatter.WriteLine();
+        //        else
+        //            Formatter.WriteSpace();
+        //    });
+        //}
+
+        //private void WriteSpaceSeparatedNodes(IEnumerable<AstNode> nodes)
+        //{
+        //    WriteStringSeparatedNodes(nodes, Formatter.WriteSpace);
+        //}
+
+        //private void WriteStringSeparatedNodes(IEnumerable<AstNode> nodes, Action writeSeparator)
+        //{
+        //    bool addSeparator = false;
+        //    foreach (var node in nodes)
+        //    {
+        //        if (addSeparator)
+        //            writeSeparator();
+
+        //        node.AcceptVisitor(this);
+        //        addSeparator = true;
+        //    }
+        //}
 
         private void WriteEndBlockKeywords(string keyword)
         {
             Formatter.WriteKeyword("End");
             Formatter.WriteSpace();
-            Formatter.WriteKeywordLine(keyword);
+            Formatter.WriteKeyword(keyword);
         }
 
         private void WriteAsKeyword()
@@ -129,7 +164,7 @@ namespace AbstractCode.Ast.VisualBasic
         {
             Formatter.StartNode(endStatement);
 
-            Formatter.WriteKeywordLine("End");
+            Formatter.WriteKeyword("End");
 
             Formatter.EndNode();
         }
@@ -140,7 +175,7 @@ namespace AbstractCode.Ast.VisualBasic
 
             Formatter.WriteKeyword("Continue");
             Formatter.WriteSpace();
-            Formatter.WriteKeywordLine(Statements.ContinueStatement.VariantToString(continueStatement.Variant));
+            Formatter.WriteKeyword(Statements.ContinueStatement.VariantToString(continueStatement.Variant));
 
             Formatter.EndNode();
         }
@@ -151,7 +186,7 @@ namespace AbstractCode.Ast.VisualBasic
 
             Formatter.WriteKeyword("Exit");
             Formatter.WriteSpace();
-            Formatter.WriteKeywordLine(Statements.ExitStatement.VariantToString(exitStatement.Variant));
+            Formatter.WriteKeyword(Statements.ExitStatement.VariantToString(exitStatement.Variant));
 
             Formatter.EndNode();
         }
@@ -514,6 +549,12 @@ namespace AbstractCode.Ast.VisualBasic
         {
             Formatter.StartNode(declaration);
 
+            if (declaration.CustomAttributeSections.Count > 0)
+            {
+                WriteNodes(declaration.CustomAttributeSections, true);
+                Formatter.WriteLine();
+            }
+
             if (declaration.ModifierElements.Count > 0)
             {
                 WriteSpaceSeparatedNodes(declaration.ModifierElements);
@@ -539,8 +580,6 @@ namespace AbstractCode.Ast.VisualBasic
                 declaration.Body.AcceptVisitor(this);
                 WriteEndBlockKeywords(keyword);
             }
-            else
-                Formatter.WriteLine();
 
 
             Formatter.EndNode();
@@ -549,6 +588,12 @@ namespace AbstractCode.Ast.VisualBasic
         public void VisitConstructorDeclaration(ConstructorDeclaration declaration)
         {
             Formatter.StartNode(declaration);
+
+            if (declaration.CustomAttributeSections.Count > 0)
+            {
+                WriteNodes(declaration.CustomAttributeSections, true);
+                Formatter.WriteLine();
+            }
 
             if (declaration.ModifierElements.Count > 0)
             {
@@ -569,8 +614,6 @@ namespace AbstractCode.Ast.VisualBasic
                 declaration.Body.AcceptVisitor(this);
                 WriteEndBlockKeywords("Sub");
             }
-            else
-                Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -578,6 +621,22 @@ namespace AbstractCode.Ast.VisualBasic
         public void VisitCustomAttribute(CustomAttribute attribute)
         {
             Formatter.StartNode(attribute);
+
+            switch (attribute.Variant)
+            {
+                case CustomAttributeVariant.Assembly:
+                    Formatter.WriteKeyword("Assembly");
+                    break;
+                case CustomAttributeVariant.Module:
+                    Formatter.WriteKeyword("Module");
+                    break;
+            }
+
+            if (attribute.Variant != CustomAttributeVariant.Normal)
+            {
+                Formatter.WriteToken(":");
+                Formatter.WriteSpace();
+            }
 
             attribute.Type.AcceptVisitor(this);
 
@@ -629,8 +688,6 @@ namespace AbstractCode.Ast.VisualBasic
                 declaration.DelegateType.AcceptVisitor(this);
             }
 
-            Formatter.WriteLine();
-
             Formatter.EndNode();
         }
 
@@ -664,14 +721,18 @@ namespace AbstractCode.Ast.VisualBasic
                 declaration.EventType.AcceptVisitor(this);
             }
 
-            Formatter.WriteLine();
-
             Formatter.EndNode();
         }
 
         public void VisitFieldDeclaration(FieldDeclaration declaration)
         {
             Formatter.StartNode(declaration);
+
+            if (declaration.CustomAttributeSections.Count > 0)
+            {
+                WriteNodes(declaration.CustomAttributeSections, true);
+                Formatter.WriteLine();
+            }
 
             if (declaration.ModifierElements.Count > 0)
             {
@@ -685,8 +746,6 @@ namespace AbstractCode.Ast.VisualBasic
 
             declaration.FieldType.AcceptVisitor(this);
             Formatter.WriteSpace();
-
-            Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -703,6 +762,12 @@ namespace AbstractCode.Ast.VisualBasic
         public void VisitMethodDeclaration(MethodDeclaration declaration)
         {
             Formatter.StartNode(declaration);
+
+            if (declaration.CustomAttributeSections.Count > 0)
+            {
+                WriteNodes(declaration.CustomAttributeSections, true);
+                Formatter.WriteLine();
+            }
 
             if (declaration.ModifierElements.Count > 0)
             {
@@ -740,8 +805,6 @@ namespace AbstractCode.Ast.VisualBasic
                 declaration.Body.AcceptVisitor(this);
                 WriteEndBlockKeywords(keyword);
             }
-            else
-                Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -764,9 +827,10 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.Indent();
             Formatter.WriteLine();
 
-            WriteNodes(declaration.UsingDirectives);
-            WriteNodes(declaration.Types);
+            WriteNodes(declaration.UsingDirectives, true);
+            WriteNodes(declaration.Types, true);
 
+            Formatter.WriteLine();
             Formatter.Unindent();
             WriteEndBlockKeywords("Namespace");
 
@@ -790,6 +854,12 @@ namespace AbstractCode.Ast.VisualBasic
         {
             Formatter.StartNode(declaration);
 
+            if (declaration.CustomAttributeSections.Count > 0)
+            {
+                WriteNodes(declaration.CustomAttributeSections, true);
+                Formatter.WriteLine();
+            }
+
             if (declaration.ModifierElements.Count > 0)
             {
                 WriteSpaceSeparatedNodes(declaration.ModifierElements);
@@ -810,6 +880,7 @@ namespace AbstractCode.Ast.VisualBasic
             if (declaration.Setter != null)
                 declaration.Setter.AcceptVisitor(this);
 
+            Formatter.WriteLine();
             Formatter.Unindent();
             WriteEndBlockKeywords("Property");
 
@@ -819,6 +890,12 @@ namespace AbstractCode.Ast.VisualBasic
         public void VisitTypeDeclaration(TypeDeclaration declaration)
         {
             Formatter.StartNode(declaration);
+            
+            if (declaration.CustomAttributeSections.Count > 0)
+            {
+                WriteNodes(declaration.CustomAttributeSections, true);
+                Formatter.WriteLine();
+            }
 
             if (declaration.ModifierElements.Count > 0)
             {
@@ -855,8 +932,9 @@ namespace AbstractCode.Ast.VisualBasic
                 Formatter.WriteLine();
             }
 
-            WriteNodes(declaration.Members);
+            WriteNodes(declaration.Members, true);
 
+            Formatter.WriteLine();
             Formatter.Unindent();
             WriteEndBlockKeywords(keyword);
 
@@ -890,7 +968,6 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.WriteKeyword("Imports");
             Formatter.WriteSpace();
             namespaceDirective.NamespaceIdentifier.AcceptVisitor(this);
-            Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -922,7 +999,6 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.WriteToken(",");
             Formatter.WriteSpace();
             statement.DelegateExpression.AcceptVisitor(this);
-            Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -934,8 +1010,9 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.Indent();
             Formatter.WriteLine();
 
-            WriteNodes(statement.Statements);
+            WriteNodes(statement.Statements, true);
 
+            Formatter.WriteLine();
             Formatter.Unindent();
             Formatter.EndNode();
         }
@@ -968,7 +1045,6 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.WriteKeyword("While");
             Formatter.WriteSpace();
             statement.Condition.AcceptVisitor(this);
-            Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -985,7 +1061,6 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.StartNode(statement);
 
             statement.Expression.AcceptVisitor(this);
-            Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -997,7 +1072,6 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.WriteKeyword("Goto");
             Formatter.WriteSpace();
             statement.LabelIdentifier.AcceptVisitor(this);
-            Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -1010,13 +1084,13 @@ namespace AbstractCode.Ast.VisualBasic
             Formatter.WriteSpace();
             statement.Condition.AcceptVisitor(this);
             Formatter.WriteSpace();
-            Formatter.WriteKeywordLine("Then");
+            Formatter.WriteKeyword("Then");
 
             statement.TrueBlock.AcceptVisitor(this);
 
             if (statement.FalseBlock != null)
             {
-                Formatter.WriteKeywordLine("Else");
+                Formatter.WriteKeyword("Else");
                 statement.FalseBlock.AcceptVisitor(this);
             }
 
@@ -1031,7 +1105,6 @@ namespace AbstractCode.Ast.VisualBasic
 
             Formatter.WriteIdentifier(statement.Label);
             Formatter.WriteToken(":");
-            Formatter.WriteLine();
 
             Formatter.EndNode();
         }
@@ -1062,8 +1135,6 @@ namespace AbstractCode.Ast.VisualBasic
             if (statement.Value != null)
                 statement.Value.AcceptVisitor(this);
 
-            Formatter.WriteLine();
-
             Formatter.EndNode();
         }
 
@@ -1079,8 +1150,6 @@ namespace AbstractCode.Ast.VisualBasic
             else
                 switchCaseLabel.Condition.AcceptVisitor(this);
 
-            Formatter.WriteLine();
-
             Formatter.EndNode();
         }
 
@@ -1088,7 +1157,7 @@ namespace AbstractCode.Ast.VisualBasic
         {
             Formatter.StartNode(switchSection);
 
-            WriteNodes(switchSection.Labels);
+            WriteNodes(switchSection.Labels, true);
             Formatter.Indent();
             WriteNodes(switchSection.Statements);
             Formatter.Unindent();
@@ -1110,7 +1179,7 @@ namespace AbstractCode.Ast.VisualBasic
             WriteNodes(statement.Sections);
 
             Formatter.Unindent();
-            WriteEndBlockKeywords("End Select");
+            WriteEndBlockKeywords("Select");
 
             Formatter.EndNode();
         }

@@ -749,6 +749,21 @@ namespace AbstractCode.Ast.CSharp
         {
             Formatter.StartNode(attribute);
 
+            switch (attribute.Variant)
+            {
+                case CustomAttributeVariant.Assembly:
+                    Formatter.WriteKeyword("assembly");
+                    break;
+                case CustomAttributeVariant.Module:
+                    Formatter.WriteKeyword("module");
+                    break;
+            }
+            if (attribute.Variant != CustomAttributeVariant.Normal)
+            {
+                Formatter.WriteToken(":");
+                Formatter.WriteSpace();
+            }
+
             attribute.Type.AcceptVisitor(this);
 
             if (attribute.Arguments.Count > 0)

@@ -305,18 +305,23 @@ namespace AbstractCode.Ast.VisualBasic
         private readonly VisualBasicStringFormatter _stringFormatter;
         private readonly VisualBasicNumberFormatter _numberFormatter;
         private AutomatonSourceParser _parser;
+        private VisualBasicGrammar _grammar;
 
         private VisualBasicLanguage()
         {
             _data = LanguageData.FromXml(Properties.Resources.VisualBasic);
             _stringFormatter = new VisualBasicStringFormatter();
             _numberFormatter = new VisualBasicNumberFormatter();
-            Grammar = new VisualBasicGrammar();
         }
 
         public VisualBasicGrammar Grammar
         {
-            get;
+            get
+            {
+                if (_grammar != null)
+                    _grammar = new VisualBasicGrammar();
+                return _grammar;
+            }
         }
 
         public AutomatonSourceParser Parser

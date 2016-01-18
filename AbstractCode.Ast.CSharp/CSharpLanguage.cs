@@ -334,13 +334,13 @@ namespace AbstractCode.Ast.CSharp
         private readonly CSharpStringFormatter _stringFormatter;
         private readonly CSharpNumberFormatter _numberFormatter;
         private AutomatonSourceParser _parser;
+        private CSharpGrammar _grammar;
 
         private CSharpLanguage()
         {
             _data = LanguageData.FromXml(Properties.Resources.CSharp);
             _stringFormatter = new CSharpStringFormatter();
             _numberFormatter = new CSharpNumberFormatter();
-            Grammar = new CSharpGrammar();
         }
 
         public AutomatonSourceParser Parser
@@ -400,7 +400,12 @@ namespace AbstractCode.Ast.CSharp
 
         public CSharpGrammar Grammar
         {
-            get;
+            get
+            {
+                if (_grammar != null)
+                    _grammar = new CSharpGrammar();
+                return _grammar;
+            }
         }
 
         public override CompilationUnit Parse(IDocument input)
